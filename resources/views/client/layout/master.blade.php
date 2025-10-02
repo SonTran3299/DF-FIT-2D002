@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <title>My Project</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    {{-- <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="login-url" content="{{ route('login') }}">
 
     <!-- Favicon -->
     <link href="{{ asset('client_asset/img/favicon.ico') }}" rel="icon">
@@ -24,6 +26,12 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('client_asset/css/style.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+
+    {{-- css cho card product --}}
+    <link rel="stylesheet" href="{{asset('client_asset/css/card.css')}}">
+    @yield('custom-style')
 </head>
 
 <body>
@@ -31,39 +39,7 @@
     @include('client.blocks.topbar')
 
     <!-- Navbar  -->
-    <div class="container-fluid mb-5">
-        <div class="row border-top px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
-                    data-toggle="collapse" href="#navbar-vertical"
-                    style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                    <h6 class="m-0">Categories</h6>
-                    <i class="fa fa-angle-down text-dark"></i>
-                </a>
-                @yield('nav-home')
-                @yield('nav-except-home')
-            </div>
-            <div class="col-lg-9">
-                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                    <a href="" class="text-decoration-none d-block d-lg-none">
-                        <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                                class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
-                    </a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        @yield('navbar')
-                        <div class="navbar-nav ml-auto py-0">
-                            <a href="{{ route('client.pages.user.login') }}" class="nav-item nav-link">Đăng nhập</a>
-                            <a href="{{ route('client.pages.user.register') }}" class="nav-item nav-link">Đăng ký</a>
-                        </div>
-                    </div>
-                </nav>
-                @yield('header-carousel')
-            </div>
-        </div>
-    </div>
+    @include('client.blocks.nav-bar')
 
     <!-- Featured/ Page Header -->
     @yield('page-header')
@@ -80,7 +56,9 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('client_asset/lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('client_asset/lib/owlcarousel/owl.carousel.min.js') }}"></script>
@@ -91,6 +69,45 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('client_asset/js/main.js') }}"></script>
+
+    <script>
+        const cartCountUrl = "{{ route('client.cart-count') }}";
+
+        function updateCartCount() {
+            fetch(cartCountUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Ensure the element exists before trying to update it
+                    const cartItemCountElement = document.getElementById('cart-item-count');
+                    if (cartItemCountElement) {
+                        cartItemCountElement.innerText = data.count;
+                        //console.log('New cart count updated globally:', data.count); // Global log
+                    }
+                    //else {
+                    //     console.warn('Element with ID "cart-item-count" not found. Cannot update cart count.');
+                    //}
+                })
+                .catch(error => {
+                    //console.error('Error fetching cart count in global updateCartCount:', error);
+                    const cartItemCountElement = document.getElementById('cart-item-count');
+                    if (cartItemCountElement) {
+                        cartItemCountElement.innerText = '0';
+                    }
+                });
+        }
+
+        $(document).ready(function() {
+            if (window.isAuthenticated) {
+                updateCartCount(); // Chỉ gọi khi đã đăng nhập
+            }
+        });
+    </script>
+    @yield('my-js')
 </body>
 
 </html>

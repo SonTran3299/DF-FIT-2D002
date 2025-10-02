@@ -1,31 +1,20 @@
 @extends('client.layout.master')
-@section('nav-except-home')
-    @include('client.blocks.nav-except-home')
-@endsection
-@section('navbar')
-    <div class="navbar-nav mr-auto py-0">
-        <a href="index.html" class="nav-item nav-link">Home</a>
-        <a href="shop.html" class="nav-item nav-link active">Shop</a>
-        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-        <div class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-            <div class="dropdown-menu rounded-0 m-0">
-                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                <a href="checkout.html" class="dropdown-item">Checkout</a>
-            </div>
-        </div>
-        <a href="contact.html" class="nav-item nav-link">Contact</a>
-    </div>
+
+@section('nav-other-pages')
+    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
+        id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+        @include('client.blocks.side-bar')
+    </nav>
 @endsection
 
 @section('page-header')
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Danh sách sản phẩm</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0"><a href="{{ route('client.home') }}">Trang chủ</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Shop</p>
+                <p class="m-0">Cửa hàng</p>
             </div>
         </div>
     </div>
@@ -36,359 +25,61 @@
         <div class="row px-xl-5">
             <!-- Shop Sidebar Start -->
             <div class="col-lg-3 col-md-12">
-                <!-- Price Start -->
                 <div class="border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="price-all">
-                            <label class="custom-control-label" for="price-all">All Price</label>
-                            <span class="badge border font-weight-normal">1000</span>
+                    <form action="{{ route('client.shop') }}" method="GET" id="price-filter-form">
+                        <h5 class="font-weight-semi-bold mb-4">Lọc theo giá</h5>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="number" class="form-control" id="minPrice" name="min_price"
+                                    placeholder="Tối thiểu" value="{{ request()->get('min_price') ?? '' }}">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" class="form-control" id="maxPrice" name="max_price"
+                                    placeholder="Tối đa" value="{{ request()->get('max_price') ?? '' }}">
+                            </div>
                         </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label" for="price-1">$0 - $100</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">$100 - $200</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label" for="price-3">$200 - $300</label>
-                            <span class="badge border font-weight-normal">246</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label" for="price-4">$300 - $400</label>
-                            <span class="badge border font-weight-normal">145</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label" for="price-5">$400 - $500</label>
-                            <span class="badge border font-weight-normal">168</span>
-                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-1">Áp dụng</button>
                     </form>
                 </div>
-                <!-- Price End -->
-
-                <!-- Color Start -->
-                <div class="border-bottom mb-4 pb-4">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="color-all">
-                            <label class="custom-control-label" for="price-all">All Color</label>
-                            <span class="badge border font-weight-normal">1000</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-1">
-                            <label class="custom-control-label" for="color-1">Black</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-2">
-                            <label class="custom-control-label" for="color-2">White</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-3">
-                            <label class="custom-control-label" for="color-3">Red</label>
-                            <span class="badge border font-weight-normal">246</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-4">
-                            <label class="custom-control-label" for="color-4">Blue</label>
-                            <span class="badge border font-weight-normal">145</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="color-5">
-                            <label class="custom-control-label" for="color-5">Green</label>
-                            <span class="badge border font-weight-normal">168</span>
-                        </div>
-                    </form>
-                </div>
-                <!-- Color End -->
-
-                <!-- Size Start -->
-                <div class="mb-5">
-                    <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="size-all">
-                            <label class="custom-control-label" for="size-all">All Size</label>
-                            <span class="badge border font-weight-normal">1000</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-1">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-2">
-                            <label class="custom-control-label" for="size-2">S</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-3">
-                            <label class="custom-control-label" for="size-3">M</label>
-                            <span class="badge border font-weight-normal">246</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-4">
-                            <label class="custom-control-label" for="size-4">L</label>
-                            <span class="badge border font-weight-normal">145</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="size-5">
-                            <label class="custom-control-label" for="size-5">XL</label>
-                            <span class="badge border font-weight-normal">168</span>
-                        </div>
-                    </form>
-                </div>
-                <!-- Size End -->
             </div>
             <!-- Shop Sidebar End -->
-
 
             <!-- Shop Product Start -->
             <div class="col-lg-9 col-md-12">
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <form action="">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                    </div>
+                        <div>
+                            <form action="{{ route('client.shop') }}" method="GET" id="sort-form"
+                                class="d-flex align-items-center justify-content-end mb-4 ">
+                                <div class="ml-4">
+                                    <select class="form-control mr-sm-2" name="sort" id="sort">
+                                        <option {{ in_array(request()->get('sort'), ['latest', '']) ? 'selected' : '' }}
+                                            value="latest">
+                                            Mới nhất
+                                        </option>
+                                        <option {{ request()->get('sort') === 'oldest' ? 'selected' : '' }} value="oldest">
+                                            Cũ nhất
+                                        </option>
+                                        <option {{ request()->get('sort') === 'highest' ? 'selected' : '' }} value="highest">
+                                            Giá cao đến thấp
+                                        </option>
+                                        <option {{ request()->get('sort') === 'lowest' ? 'selected' : '' }} value="lowest">
+                                            Giá thấp đến cao
+                                        </option>
+                                    </select>
                                 </div>
                             </form>
-                            <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Sort by
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" href="#">Latest</a>
-                                    <a class="dropdown-item" href="#">Popularity</a>
-                                    <a class="dropdown-item" href="#">Best Rating</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-1.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
+                    @foreach ($dataProduct as $data)
+                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                            @include('client.blocks.product-card', ['datas' => $data])
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-2.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-3.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-4.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-5.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-6.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-7.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-8.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                        <div class="card product-item border-0 mb-4">
-                            <div
-                                class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="img/product-1.jpg" alt="">
-                            </div>
-                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6>$123.00</h6>
-                                    <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                                </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between bg-light border">
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i
-                                        class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+
                     <div class="col-12 pb-1">
                         <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center mb-3">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            {{ $dataProduct->withQueryString()->links() }}
                         </nav>
                     </div>
                 </div>
@@ -396,4 +87,100 @@
             <!-- Shop Product End -->
         </div>
     </div>
+
+    <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-end align-items-end"
+        style="min-height: 100px; position: fixed; bottom: 20px; right: 20px; z-index: 1;">
+        <div class="toast" role="alert" data-delay="3000">
+            <div class="toast-header">
+                {{-- <img src="..." class="rounded mr-2" alt="..."> --}}
+                <strong class="mr-auto">Thông báo</strong>
+                {{-- <small>11 mins ago</small> --}}
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Thêm sản phẩm thành công
+            </div>
+        </div>
+    </div>
+@endsection
+@section('my-js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortSelect = document.getElementById('sort');
+            const filterForm = document.getElementById('price-filter-form');
+            const searchForm = document.getElementById('search-form');
+
+            function submitAllFilters(source) {
+                const params = new URLSearchParams(window.location.search);
+
+                if (sortSelect) {
+                    params.set('sort', sortSelect.value);
+                }
+
+                if (searchForm) {
+                    const query = searchForm.querySelector('input[name="query"]')?.value;
+                    if (query) {
+                        params.set('query', query);
+                    } else {
+                        params.delete('query');
+                    }
+                }
+
+                if (source === 'search') {
+                    params.delete('min_price');
+                    params.delete('max_price');
+                } else if (filterForm) {
+                    const minPrice = filterForm.querySelector('#minPrice')?.value;
+                    const maxPrice = filterForm.querySelector('#maxPrice')?.value;
+
+                    if (minPrice) {
+                        params.set('min_price', minPrice);
+                    } else {
+                        params.delete('min_price');
+                    }
+                    if (maxPrice) {
+                        params.set('max_price', maxPrice);
+                    } else {
+                        params.delete('max_price');
+                    }
+                }
+
+                window.location.href = "{{ route('client.shop') }}?" + params.toString();
+            }
+
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    submitAllFilters('sort');
+                });
+            }
+
+            if (filterForm) {
+                filterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    submitAllFilters('filter');
+                });
+            }
+
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    submitAllFilters('search');
+                });
+
+                // Nhấn enter gửi form
+                const searchInput = searchForm.querySelector('input[name="query"]');
+                if (searchInput) {
+                    searchInput.addEventListener('keyup', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            submitAllFilters('search');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+    <script src="{{ asset('client_asset/js/addToCart.js') }}"></script>
 @endsection

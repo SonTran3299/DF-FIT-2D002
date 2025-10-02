@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => static::$password ??= Hash::make('123456'),
             'remember_token' => Str::random(10),
         ];
     }
@@ -39,6 +39,24 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Định nghĩa một state để tạo người dùng admin.
+     *
+     * @return static
+     */
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('123456'),
+            'remember_token' => Str::random(10),
+            'role' => 1
         ]);
     }
 }

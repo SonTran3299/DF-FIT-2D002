@@ -1,61 +1,63 @@
-{{-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
-
 <!doctype html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-
+    <link rel="dns-prefetch" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)">
+    <link
+        href="[https://fonts.googleapis.com/css?family=Raleway:300,400,600](https://fonts.googleapis.com/css?family=Raleway:300,400,600)"
+        rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="[https://fonts.bunny.net](https://fonts.bunny.net)">
+    <link
+        href="[https://fonts.bunny.net/css?family=instrument-sans:400,500,600](https://fonts.bunny.net/css?family=instrument-sans:400,500,600)"
+        rel="stylesheet" />
     <link rel="icon" href="Favicon.png">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-
-    {{-- <link href="{{ asset('client_asset/css/style.css') }}" rel="stylesheet"> --}}
-
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>My Project</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('client.pages.home') }}">Trang chủ</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    <nav class="bg-white shadow py-4">
+        <div class="container mx-auto px-4 flex flex-wrap items-center justify-between">
+            <a class="text-xl font-semibold text-gray-800" href="">Trang chủ</a>
+            <button
+                class="block lg:hidden px-3 py-2 rounded text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                        d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"
+                        clip-rule="evenodd"></path>
+                </svg>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('client.pages.user.login') }}">Đăng nhập</a>
+            <div class="hidden lg:flex lg:flex-grow lg:items-center" id="navbarSupportedContent">
+                <ul class="flex flex-col lg:flex-row lg:ml-auto">
+                    <li class="py-2 lg:py-0 lg:px-2">
+                        <a class="block text-gray-700 hover:text-gray-900" href="">Đăng
+                            nhập</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('client.pages.user.register') }}">Đăng ký</a>
+                    <li class="py-2 lg:py-0 lg:px-2">
+                        <a class="block text-gray-700 hover:text-gray-900" href="">Đăng
+                            ký</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="cotainer">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
+    <div class="container mx-auto px-4 mt-4">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full md:w-8/12 px-4">
+                <div class="bg-white shadow-md rounded-lg p-6">
                     @yield('main_content')
                 </div>
             </div>
         </div>
-
-
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    </div>
 </body>
 
 </html>
