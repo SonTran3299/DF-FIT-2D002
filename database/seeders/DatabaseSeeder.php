@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         // ProductCategoryFactory::customCategoryName();    
         // User::factory(10)->create();
-        // User::factory()->admin()->create();   
+        // User::factory()->admin()->create();
         //Product::factory(5)->create();
         //$this->call(ProductImageSeeder::class);
         

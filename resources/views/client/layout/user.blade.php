@@ -22,7 +22,7 @@
 <body>
     <nav class="bg-white shadow py-4">
         <div class="container mx-auto px-4 flex flex-wrap items-center justify-between">
-            <a class="text-xl font-semibold text-gray-800" href="">Trang chủ</a>
+            <a class="text-xl font-semibold text-gray-800" href="{{ route('client.home') }}">Trang chủ</a>
             <button
                 class="block lg:hidden px-3 py-2 rounded text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

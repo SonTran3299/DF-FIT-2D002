@@ -24,7 +24,6 @@ class ReportController extends Controller
 
         $dailyNetSaleReport = $this->getDailyNetSaleForDateRange($startDate, $endDate);
 
-        // --- Bạn cũng có thể tính toán các chỉ số tổng hợp cho khoảng thời gian này ---
         $summaryData = $this->getFinancialSummaryForDateRange($startDate, $endDate);
 
         return view(
@@ -95,9 +94,9 @@ class ReportController extends Controller
 
         $grossSale = 0;
         $discountAmount = 0;
-        $totalOperatingExpense = 0; // Tính tổng chi phí hoạt động cho toàn bộ khoảng thời gian
+        $totalOperatingExpense = 0; // Tổng chi phí hoạt động trong khoảng thời gian
 
-        // Số ngày trong khoảng thời gian để tính tổng chi phí hoạt động
+        // Số ngày đã chọn để tính tổng chi phí
         $daysInPeriod = $startDate->diffInDays($endDate) + 1; // +1 vì diffInDays không tính ngày cuối
         $operatingExpensePerDay = 0; // Chi phí hoạt động cố định hàng ngày
         $totalOperatingExpense = $operatingExpensePerDay * $daysInPeriod;

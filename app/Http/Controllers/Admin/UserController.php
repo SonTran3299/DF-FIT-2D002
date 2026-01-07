@@ -27,11 +27,14 @@ class UserController extends Controller
             $datas = User::where('name', 'LIKE', "%$searchQuery%")->orderBy($column,  $sort)->paginate($itemPerPage);
         }
 
-        return view('admin.pages.user.list', ['datas' => $datas]);
+        return view(
+            'admin.pages.user.index',
+            ['datas' => $datas]
+        );
     }
 
     public function detail(User $user)
     {
-        return view('admin.pages.user.detail', ['user' => $user]);
+        return response()->json($user);
     }
 }

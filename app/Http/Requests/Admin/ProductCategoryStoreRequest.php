@@ -33,6 +33,8 @@ class ProductCategoryStoreRequest extends FormRequest
         return [
             'name.required' => 'Bắt buộc phải nhập tên',
             'name.min' => 'Nhập tên lớn hơn 1',
+            'slug.required' => 'Bắt buộc phải nhập slug',
+            'slug.min' => 'Nhập slug lớn hơn 1',
             'status.required' => 'Chọn trạng thái'
         ];
     }

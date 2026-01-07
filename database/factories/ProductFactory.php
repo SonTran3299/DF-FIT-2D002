@@ -21,23 +21,24 @@ class ProductFactory extends Factory
         $datas = ProductCategory::all();
         $productCategoryIds = $datas->pluck('id')->toArray();
 
-        $imageUrl = "https://picsum.photos/640/480?random=".rand();
-        $imageName = "image_".uniqid();
-        file_put_contents(public_path('images/product/main_image/'.$imageName.'.jpg'),file_get_contents($imageUrl));
+        $imageUrl = "https://picsum.photos/640/480?random=" . rand();
+        $imageName = "image_" . uniqid();
+        file_put_contents(public_path('images/product/main_image/' . $imageName . '.jpg'), file_get_contents($imageUrl));
 
         $types = ['Truyện tranh', 'Tiểu thuyết', 'Tập thơ', 'Ký sự', 'Sách chuyên ngành', 'Tạp chí', 'Sách tham khảo', 'Truyện trinh thám'];
         $randomType = fake()->randomElement($types);
         $randomVolume = rand(1, 10);
         $name = $randomType . ' quyển ' . $randomVolume;
+        $decription = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, tempora ex. Asperiores illo at quasi ullam, est culpa, necessitatibus quae, natus minima labore esse tempore? Perspiciatis rem tempora quo quibusdam!';
 
         return [
             'status' => fake()->boolean(),
             'name' => $name,
             'price' => fake()->randomNumber(6, false),
             'stock' => fake()->randomNumber(3, false),
-            'main_image' => $imageName.'.jpg',
+            'main_image' => $imageName . '.jpg',
             'discount_percentage' => fake()->randomFloat(2, 0, 0.3),
-            'description' => fake()->randomHtml(2, 2),
+            'description' => $decription,
             'product_category_id' => fake()->randomElement($productCategoryIds),
             'created_at' => now(),
             'updated_at' => now()

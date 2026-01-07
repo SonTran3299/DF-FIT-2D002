@@ -19,16 +19,17 @@ class DashboardController extends Controller
         return view(
             'admin.pages.dashboard.index',
             [
-                'productSold' => self::soldProducts($month, $year),
-                'countOrder' => self::countNewOrder(),
-                'countUser' => User::count() - 1,
-                'successRate' => self::caculateSuccessfulDeliveryRate(),
-                'reportMonthly' => $this->getChartDataForLastThreeMonths(),
+                'productSold' => self::getSoldProductsCount($month, $year),
+                'orderCount' => self::getNewOrderCount(),
+                'userCount' => User::count() - 1,
+                //'successRate' => self::calculateSuccessfulDeliveryRate(),
+                'monthlyReport' => $this->getChartDataForLastThreeMonths(),
+                'monthlyRevenue' => $this->getMonthlyFinancialSummary($month, $year)
             ]
         );
     }
 
-    protected function countNewOrder()
+    protected function getNewOrderCount()
     {
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
@@ -36,7 +37,7 @@ class DashboardController extends Controller
         return Order::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
     }
 
-    protected static function soldProducts(string|int $month, string|int $year)
+    protected static function getSoldProductsCount(string|int $month, string|int $year)
     {
         $products = OrderItem::selectRaw('name, sum(quantity) as total')->whereMonth('updated_at', $month)
             ->whereYear('updated_at', $year)
@@ -50,17 +51,18 @@ class DashboardController extends Controller
         return $chartData;
     }
 
-    protected static function caculateSuccessfulDeliveryRate(): float
-    {
-        $total = Order::whereIn('status', [3, 5])->count();
-        $totalDelivered = Order::where('status', 3)->count();
+    // Calculate the percentage of successfully delivered orders in the month
+    // protected static function calculateSuccessfulDeliveryRate(): float
+    // {
+    //     $total = Order::whereIn('status', [3, 5])->count();
+    //     $totalDelivered = Order::where('status', 3)->count();
 
-        $rate = 0;
-        if ($total > 0) {
-            $rate = ($totalDelivered / $total) * 100;
-        }
-        return round($rate, 2);
-    }
+    //     $rate = 0;
+    //     if ($total > 0) {
+    //         $rate = ($totalDelivered / $total) * 100;
+    //     }
+    //     return round($rate, 2);
+    // }
 
     protected function getMonthlyFinancialSummary(string|int $month, string|int $year): array
     {
@@ -70,7 +72,7 @@ class DashboardController extends Controller
         $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
         $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay();
 
-        // Lấy các mục đơn hàng đã hoàn thành trong khoảng thời gian này
+        // Orders successfully processed during this period
         $products = OrderItem::whereHas('order', function ($query) { 
             $query->where('status', '!=', 5); 
         })
@@ -98,12 +100,13 @@ class DashboardController extends Controller
         ];
     }
 
+    // Data from the last 3 months
     protected function getChartDataForLastThreeMonths(): array
     {
         $chartData = [['Tháng', 'GROSS', 'NET', 'CHI PHÍ']];
         $today = Carbon::now();
 
-        // Lấy dữ liệu cho 3 tháng gần nhất (gồm tháng hiện tại)
+        // Retrieve data for the last 3 months (including the current month)
         for ($i = 0; $i < 3; $i++) {
             $date = $today->copy()->subMonths($i); 
 
@@ -114,7 +117,7 @@ class DashboardController extends Controller
 
             $label = ucfirst($date->monthName) . ' ' . $year;
 
-            // Thêm dữ liệu vào mảng chartData
+            // Add data to the chartData array
             $chartData[] = [
                 $label,
                 $monthlySummary['grossSale'],
@@ -123,10 +126,10 @@ class DashboardController extends Controller
             ];
         }
 
-        // Đảo ngược mảng (trừ header) để biểu đồ hiển thị theo thứ tự thời gian (tháng cũ nhất đến tháng mới nhất)
-        $header = array_shift($chartData); // Tách header
-        $chartData = array_reverse($chartData); // Đảo ngược dữ liệu
-        array_unshift($chartData, $header); // Đặt header lên đầu mảng
+        // Reverse the array (except for the header) to display from oldest to newest month
+        $header = array_shift($chartData);
+        $chartData = array_reverse($chartData);
+        array_unshift($chartData, $header);
 
         return $chartData;
     }

@@ -6,7 +6,7 @@
                         class="text-primary font-weight-bold border border-white px-3 mr-1">S</span>Shopper</h1>
             </a>
             <p>Cửa hàng sách</p>
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Địa chỉ cửa hàng: Đường 123, phường
+            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Địa chỉ liên hệ: Đường 123, phường
                 456, TP HCM</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>Email của hàng: info@example.com</p>
             <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>0123456789</p>
@@ -14,7 +14,7 @@
         <div class="col-lg-8 col-md-12">
             <div class="row">
                 <div class="col-md-6 mb-5">
-                    {{-- Chưa --}}
+                    {{-- Chưa --}}  
                 </div>
                 <div class="col-md-6 mb-5">
                     <h5 class="font-weight-bold text-dark mb-4">Đường dẫn nhanh</h5>

@@ -7,7 +7,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{ $countOrder }}</h3>
+                    <h3>{{ $orderCount }}</h3>
                     <p>Đơn hàng trong tháng {{ \Carbon\Carbon::now()->format('m') }}</p>
                 </div>
                 <div class="icon">
@@ -17,28 +17,29 @@
                     <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
         <!-- ./col -->
         <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>{{ $successRate }}<sup style="font-size: 20px">%</sup></h3>
-
-                    <p>Tỷ lệ hoàn thành đơn</p>
+                    <h3>{{ $monthlyRevenue['netSale'] }}<sup style="font-size: 20px">đ</sup></h3>
+                    <p>Tổng doanh thu (net)</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="{{ route('admin.order.list') }}" class="small-box-footer">Xem chi tiết 
+                <a href="{{ route('admin.report.saleSummary') }}" class="small-box-footer">Xem chi tiết 
                     <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
         <!-- ./col -->
         <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>{{ $countUser }}</h3>
+                    <h3>{{ $userCount }}</h3>
 
                     <p>Người dùng đã đăng ký</p>
                 </div>
@@ -99,14 +100,10 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-chart-line mr-1"></i>
-                Doanh thu theo tháng
+                Doanh thu 3 tháng gần nhất
             </h3>
         </div>
-        {{-- <div class="card-body">
-            <div>GROSS: {{ Number::currency($sales['grossSale']) }}</div>
-            <div>NET: {{ Number::currency($sales['netSale']) }}</div>
-            <div>Chi phí phát sinh: {{ Number::currency($sales['expense']) }}</div>
-        </div> --}}
+
         <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 400px;">
                 <div id="monthly_sale_report" style="width: 800px; height: 500px;"></div>
             </div>
@@ -144,7 +141,7 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable(@json($reportMonthly));
+        var data = google.visualization.arrayToDataTable(@json($monthlyReport));
 
         var options = {
           chart: {

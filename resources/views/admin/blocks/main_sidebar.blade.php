@@ -99,7 +99,7 @@
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
-        <!-- Doanh thu -->
+        <!-- Báo cáo doanh thu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
@@ -115,7 +115,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Doanh thu
+                            Báo cáo
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -131,7 +131,7 @@
                 </li>
             </ul>
         </nav>
-        <!-- /.Doanh thu -->
+        <!-- /.Báo cáo doanh thu -->
     </div>
     <!-- /.sidebar -->
 </aside>

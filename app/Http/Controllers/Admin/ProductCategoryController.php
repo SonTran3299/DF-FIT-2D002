@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductCategoryController extends Controller
 {
@@ -29,21 +30,22 @@ class ProductCategoryController extends Controller
         $itemPerPage = config('my-config.item_per_page');
 
         if (!$searchQuery) {
-            $datas = DB::table('product_category')->orderBy($column, $sort)->paginate($itemPerPage);
+            $datas = ProductCategory::orderBy($column, $sort)->paginate($itemPerPage);
         } else {
-            $datas = DB::table('product_category')->where('name', 'LIKE', "%$searchQuery%")->orderBy($column, $sort)->paginate($itemPerPage);
+            $datas = ProductCategory::where('name', 'LIKE', "%$searchQuery%")->orderBy($column, $sort)->paginate($itemPerPage);
         }
 
-        return view('admin.pages.product_category.list', ['datas' => $datas]);
+        return view('admin.pages.product_category.index', ['datas' => $datas]);
     }
 
-    public function create(): View
-    {
-        return view('admin.pages.product_category.create');
-    }
+    // public function create(): View
+    // {
+    //     return view('admin.pages.product_category.create');
+    // }
 
     public function store(ProductCategoryStoreRequest $request)
     {
+        $fileName = ProductCategory::DEFAULT_IMAGE;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $fileName = $image->getClientOriginalName();
@@ -52,7 +54,7 @@ class ProductCategoryController extends Controller
 
             $fileName = sprintf('%s_%s.%s', $fileName, uniqid(), $extension);
 
-            $image->move(public_path('images/category'), $fileName);
+            $image->move(public_path(ProductCategory::IMAGE_PATH), $fileName);
         }
 
         $check = ProductCategory::create([
@@ -83,31 +85,31 @@ class ProductCategoryController extends Controller
         return redirect()->route('admin.product_category.list')->with('msg', $msg);
     }
 
-    public function detail(ProductCategory $productCategory): View
+    public function detail(ProductCategory $productCategory) : Response
     {
-        return view('admin.pages.product_category.detail', ['data' => $productCategory]);
+        return response()->json($productCategory);
     }
 
     public function update(ProductCategoryUpdateRequest $request, ProductCategory $productCategory)
     {
-        $productCategory = ProductCategory::findOrFail($productCategory->id);
         $newImage = $productCategory->image;
 
         if ($request->hasFile('image')) {
-            if ($productCategory->image) {
-                $oldFilePath = public_path('images/category/' . $productCategory->image);
+            if ($productCategory->image && $productCategory->image !== ProductCategory::DEFAULT_IMAGE) {
+                $oldFilePath = public_path(ProductCategory::IMAGE_PATH . '/' . $productCategory->image);
                 if (File::exists($oldFilePath)) {
                     File::delete($oldFilePath);
                 }
             }
 
+            //Save new image
             $image = $request->file('image');
             $newFileName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $image->getClientOriginalExtension();
 
             $newImage = sprintf('%s_%s.%s', $newFileName, uniqid(), $extension);
 
-            $image->move(public_path('images/category'), $newImage);
+            $image->move(public_path(ProductCategory::IMAGE_PATH), $newImage);
         }
 
         $productCategory->name = $request->name;

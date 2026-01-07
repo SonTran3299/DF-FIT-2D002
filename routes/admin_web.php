@@ -24,7 +24,7 @@ Route::prefix('admin/product_category')
     ->group(function () {
         Route::get('list', 'list')->name('list');
 
-        Route::get('create', 'create')->name('create');
+        //Route::get('create', 'create')->name('create');
 
         Route::post('store', 'store')->name('store');
 
@@ -34,7 +34,7 @@ Route::prefix('admin/product_category')
 
         Route::get('detail/{productCategory}', 'detail')->name('detail');
 
-        Route::post('update/{productCategory}', 'update')->name('update');
+        Route::put('update/{productCategory}', 'update')->name('update');
 
         Route::post('restore/{productCategory}', 'restore')->name('restore');
     });
@@ -71,7 +71,9 @@ Route::prefix('admin/order')
     ->middleware(CheckIsAdmin::class)
     ->group(function () {
         Route::get('list', 'index')->name('list');
+
         Route::get('detail/{order}', 'detail')->name('detail');
+        
         Route::post('update-order-status/{order}', 'updateOrderStatus')->name('update-order-status');
     });
 

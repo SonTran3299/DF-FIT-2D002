@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\HandleFormattedTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 
 class ProductCategory extends Model
 {
+    const IMAGE_PATH = 'images/category';
+    const DEFAULT_IMAGE = 'default_product.svg';
+
     use HasFactory, SoftDeletes;
+    use HandleFormattedTimestamps;
 
     protected $table = 'product_category';
 
