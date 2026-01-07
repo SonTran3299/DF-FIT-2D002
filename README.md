@@ -34,9 +34,9 @@ This system provides a seamless experience for both customers and administrators
 
 📸 Screenshots
 
-Home Page: ![Home Page](link_anh_cua_ban)
+Home Page: ![Home Page](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/home_page.jpg)
 
-Admin Dashboard: ![Dashboard](link_anh_cua_ban)
+Admin Dashboard: ![Dashboard](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/admin_dashboard.jpg)
 
 Cart: ![Cart](link_anh_cua_ban)
 
