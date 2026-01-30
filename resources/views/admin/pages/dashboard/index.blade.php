@@ -3,84 +3,65 @@
 @section('content')
     <!-- Small boxes (Stat box) -->
     <div class="row">
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-                <div class="inner">
+        <div class="col-lg-3 col-6 mb-4 d-flex">
+            <div class="small-box bg-info h-100 w-100 d-flex flex-column">
+                <div class="inner flex-grow-1">
                     <h3>{{ $orderCount }}</h3>
                     <p>Đơn hàng trong tháng {{ \Carbon\Carbon::now()->format('m') }}</p>
+                    <p class="ml-3">Trung bình {{ 0 }}đ / hoá đơn</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-bag"></i>
                 </div>
-                <a href="{{ route('admin.order.list') }}" class="small-box-footer">Xem chi tiết
-                    <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.order.list') }}" class="small-box-footer">
+                    Xem chi tiết <i class="fas fa-arrow-circle-right"></i>
+                </a>
             </div>
         </div>
 
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-                <div class="inner">
+        <div class="col-lg-3 col-6 mb-4 d-flex">
+            <div class="small-box bg-success h-100 w-100 d-flex flex-column">
+                <div class="inner flex-grow-1">
                     <h3>{{ $monthlyRevenue['netSale'] }}<sup style="font-size: 20px">đ</sup></h3>
                     <p>Tổng doanh thu (net)</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="{{ route('admin.report.saleSummary') }}" class="small-box-footer">Xem chi tiết 
-                    <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.report.saleSummary') }}" class="small-box-footer">
+                    Xem chi tiết <i class="fas fa-arrow-circle-right"></i>
+                </a>
             </div>
         </div>
 
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-                <div class="inner">
+        <div class="col-lg-3 col-6 mb-4 d-flex">
+            <div class="small-box bg-warning h-100 w-100 d-flex flex-column">
+                <div class="inner flex-grow-1">
                     <h3>{{ $userCount }}</h3>
-
                     <p>Người dùng đã đăng ký</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person-add"></i>
                 </div>
-                <a href="{{ route('admin.user.list') }}" class="small-box-footer">Xem chi tiết <i
-                        class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.user.list') }}" class="small-box-footer">
+                    Xem chi tiết <i class="fas fa-arrow-circle-right"></i>
+                </a>
             </div>
         </div>
-        <!-- ./col -->
-        {{-- <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>65</h3>
-
-                    <p>Unique Visitors</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div> --}}
-        <!-- ./col -->
-
     </div>
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title m-0">
                 <i class="fas fa-chart-pie mr-1"></i>
-                Sản phẩm
+                Sản phẩm đã bán trong tháng
             </h3>
             <form action="{{ route('admin.dashboard') }}" method="get" class="form-inline ml-auto">
                 <div class="input-group">
                     <span class="input-group-text">Tháng</span>
-                    <input type="number" class="form-control" name="month" id="month"
-                        value="{{ request()->get('month') ?? \Carbon\Carbon::now()->month }}" aria-label="Month"
-                        aria-describedby="button-addon2" style="width: 80px">
+                    <input min="1" max="12" step="1" type="number" class="form-control" name="month"
+                        id="month" value="{{ request()->get('month') ?? \Carbon\Carbon::now()->month }}"
+                        aria-label="Month" aria-describedby="button-addon2" style="width: 80px">
                     <input type="number" class="form-control" name="year" id="year"
                         value="{{ request()->get('year') ?? \Carbon\Carbon::now()->year }}" aria-label="Year"
                         aria-describedby="button-addon2" style="width: 80px">
@@ -105,9 +86,9 @@
         </div>
 
         <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 400px;">
-                <div id="monthly_sale_report" style="width: 800px; height: 500px;"></div>
-            </div>
+            <div id="monthly_sale_report" style="width: 800px; height: 500px;"></div>
         </div>
+    </div>
     </div>
 @endsection
 @section('my-js')
@@ -137,22 +118,24 @@
         }
     </script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
+        google.charts.load('current', {
+            'packages': ['bar']
+        });
+        google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable(@json($monthlyReport));
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(@json($monthlyReport));
 
-        var options = {
-          chart: {
-            title: 'Doanh thu',
-            subtitle: 'Gross, Net, và Chi phí',
-          }
-        };
+            var options = {
+                chart: {
+                    title: 'Doanh thu',
+                    subtitle: 'Gross, Net',
+                }
+            };
 
-        var chart = new google.charts.Bar(document.getElementById('monthly_sale_report'));
+            var chart = new google.charts.Bar(document.getElementById('monthly_sale_report'));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
     </script>
 @endsection

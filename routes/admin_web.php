@@ -47,7 +47,7 @@ Route::prefix('admin/product')
     ->group(function () {
         Route::get('list', 'list')->name('list');
 
-        Route::get('create', 'create')->name('create');
+        //Route::get('create', 'create')->name('create');
 
         Route::post('store', 'store')->name('store');
 
@@ -55,7 +55,7 @@ Route::prefix('admin/product')
 
         Route::get('detail/{product}', 'detail')->name('detail');
 
-        Route::post('update/{product}', 'update')->name('update');
+        Route::put('update/{product}', 'update')->name('update');
 
         Route::post('restore/{product}', 'restore')->name('restore');
     });

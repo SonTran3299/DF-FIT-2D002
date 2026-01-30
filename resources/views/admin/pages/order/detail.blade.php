@@ -25,7 +25,7 @@
 
                         <div>
                             <span>Trạng thái:</span>
-                            <span class="text-danger">{{ $data->status_to_text }}</span>
+                            <span class="text-danger">{{ $data->status->label() }}</span>
                         </div>
                     </div>
                     <hr class="my-3" style="border-top: 1px solid #eee;">

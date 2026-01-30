@@ -20,7 +20,7 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('admin_asset/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- JQVMap -->
-    <link rel="stylesheet" href="{{ asset('admin_asset/plugins/jqvmap/jqvmap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('admin_asset/plugins/jqvmap/jqvmap.min.css') }}"> --}}
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin_asset/dist/css/adminlte.min.css') }}">
     <!-- overlayScrollbars -->
@@ -31,8 +31,7 @@
     <link rel="stylesheet" href="{{ asset('admin_asset/plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    {{-- Chart --}}
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
     {{-- Quill --}}
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 </head>
@@ -51,8 +50,8 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
-                {{-- <div class="container-fluid">
+            {{-- <div class="content-header">
+                <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1 class="m-0 text-dark">Dashboard</h1>
@@ -66,12 +65,12 @@
                         </div>
                         <!-- /.col -->
                     </div><!-- /.row -->
-                </div> --}}
-            </div>
+                </div>
+            </div> --}}
             <!-- /.content-header -->
 
             <!-- Main content -->
-            <section class="content">
+            <section class="content py-2">
                 <div class="container-fluid">
                     @yield('content')
                 </div><!-- /.container-fluid -->
@@ -89,6 +88,8 @@
     </div>
     <!-- ./wrapper -->
 
+    {{-- Chart --}}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <!-- jQuery -->
     <script src="{{ asset('admin_asset/plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -104,8 +105,8 @@
     <!-- Sparkline -->
     <script src="{{ asset('admin_asset/plugins/sparklines/sparkline.js') }}"></script>
     <!-- JQVMap -->
-    <script src="{{ asset('admin_asset/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('admin_asset/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+    {{-- <script src="{{ asset('admin_asset/plugins/jqvmap/jquery.vmap.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('admin_asset/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script> --}}
     <!-- jQuery Knob Chart -->
     <script src="{{ asset('admin_asset/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
     <!-- daterangepicker -->

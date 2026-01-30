@@ -20,9 +20,9 @@ class ProductCategoryController extends Controller
         $searchQuery = $request->query('query') ?? null;
         $sort  = $request->sort ?? 'latest';
 
-        $arraySort = ['id', 'desc'];
+        $arraySort = ['updated_at', 'desc'];
         if ($sort === 'oldest') {
-            $arraySort = ['id', 'asc'];
+            $arraySort = ['updated_at', 'asc'];
         }
 
         [$column, $sort] = $arraySort;
@@ -37,11 +37,6 @@ class ProductCategoryController extends Controller
 
         return view('admin.pages.product_category.index', ['datas' => $datas]);
     }
-
-    // public function create(): View
-    // {
-    //     return view('admin.pages.product_category.create');
-    // }
 
     public function store(ProductCategoryStoreRequest $request)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -11,20 +12,18 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $filter  = $request->filter ?? '';
-        $filterOptions = [
-            '' => 'Tất cả',
-            0 => 'Chờ xử lý',
-            1 => 'Đã xác nhận',
-            2 => 'Đang giao hàng',
-            3 => 'Đã giao',
-            4 => 'Đã hủy',
-            5 => 'Giao thất bại',
-        ];
+        // $filterOptions = ['' => 'Tất cả'] + Order::getStatuses();
+        $filterOptions = collect(OrderStatus::cases())
+            ->pluck('lable', 'value')
+            ->prepend('Tất cả', '');
 
         $itemPerPage = config('my-config.item_per_page');
         $query = Order::orderBy('updated_at', 'desc')->with('user');
 
-        if ($filter !== '' && in_array($filter, array_keys($filterOptions))) {
+        // if ($filter !== '' && in_array($filter, array_keys($filterOptions))) {
+        //     $query->where('status', $filter);
+        // }
+        if ($filter !== '' && $filter !== null) {
             $query->where('status', $filter);
         }
 

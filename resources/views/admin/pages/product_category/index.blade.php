@@ -11,6 +11,7 @@
             @include('admin.blocks.search_form', [
                 'actionFormRoute' => route('admin.product_category.list'),
                 'title' => 'Thêm danh mục',
+                'modal_target' => 'productCategoryModal'
             ])
 
             <!-- /.card-header -->
@@ -22,7 +23,7 @@
                             <th>Tên</th>
                             <th>Slug</th>
                             <th>Tình trạng</th>
-                            <th>Ngày tạo</th>
+                            <th>Ngày thay đổi</th>
                             <th>Đã xoá</th>
                             <th>Hành động</th>
                         </tr>
@@ -36,7 +37,7 @@
                                 <td>
                                     {{ $data->status ? 'Hiện' : 'Ẩn' }}
                                 </td>
-                                <td>{{ $data->formatted_created_at }}</td>
+                                <td>{{ $data->formatted_updated_at }}</td>
                                 <td>
                                     @if (!is_null($data->formatted_deleted_at))
                                         <form
@@ -91,6 +92,7 @@
                 <form role="form" action="{{ route('admin.product_category.store') }}" method="post"
                     enctype="multipart/form-data" id="product-category-form">
                     @csrf
+                    @method('PUT')
                     <div class="modal-body">
                         <div class="card-body">
                             <div id="create-image-section" class="form-group">
@@ -168,9 +170,6 @@
     @include('admin.blocks.notification')
     <script type="text/javascript">
         $(document).ready(function() {
-            // const defaultImagePath = "{{ asset('images/category/default_product.svg') }}";
-            // const baseImagePath = "{{ asset('images/category/') }}/";
-
             const imagePath = "{{ asset(App\Models\ProductCategory::IMAGE_PATH) }}/";
             const defaultImage =
                 "{{ asset(App\Models\ProductCategory::IMAGE_PATH . '/' . App\Models\ProductCategory::DEFAULT_IMAGE) }}";
@@ -197,7 +196,6 @@
 
                 $('#create-image-section').removeClass('d-none');
                 $('#edit-image-section').addClass('d-none');
-                $('#method_put').remove();
 
                 $('#current-main-image').attr('src', defaultImage).data('original-src', defaultImage);
             });
@@ -223,11 +221,6 @@
                 $('#create-image-section').addClass('d-none');
                 $('#edit-image-section').removeClass('d-none');
 
-                if ($('#method_put').length === 0) {
-                    $('#product-category-form').prepend(
-                        '<input type="hidden" name="_method" value="PUT" id="method_put">');
-                }
-
                 $.ajax({
                     url: detailUrl,
                     type: 'GET',
@@ -235,7 +228,6 @@
                         $('#category-name').val(data.name);
                         $('#category-slug').val(data.slug);
 
-                        //let imgSrc = data.image ? baseImagePath + data.image : defaultImagePath;
                         let imgSrc = data.image ? (imagePath + data.image) : defaultImage;
 
                         $('#current-main-image').attr('src', imgSrc).data('original-src',
@@ -281,11 +273,8 @@
             $('#productCategoryModal').on('hidden.bs.modal', function() {
                 $('#product-category-form')[0].reset();
                 $(this).find('.alert-danger').remove();
-                $('#method_put').remove();
                 $('#cancel-change-image-btn').addClass('d-none');
                 $('#status_active').prop('checked', true);
-                // Reset ảnh về mặc định tránh bị lưu ảnh của lần mở trước
-                //$('#current-main-image').attr('src', defaultImagePath);
 
                 $('#current-main-image').attr('src', defaultImage).data('original-src', defaultImage);
                 $('#edit-image-input').val('');

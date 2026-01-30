@@ -11,7 +11,7 @@ class ProductUpdateRequest extends ProductStoreRequest
             'price' => 'required',
             'product_category_id' => 'required',
             'status' => 'required',
-            'discount_percentage' => 'nullable|numeric|min:0|max:1',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'stock' => 'required|min:1',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ];

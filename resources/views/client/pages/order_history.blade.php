@@ -37,7 +37,8 @@
                                     </button>
                                 </div>
                                 <div class="col-md-4 text-right" style="font-size: 18px;">
-                                    {{ $order->status_to_text }}
+                                    {{ // $order->status_to_text
+                                        $order->status->label() }}
                                 </div>
                             </div>
                         </h2>

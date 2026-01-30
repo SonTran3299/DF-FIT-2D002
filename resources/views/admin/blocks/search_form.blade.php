@@ -4,7 +4,8 @@
             {{-- <button class="btn btn-success" href="{{ $createUrl }}">
                 <i class="fa fa-plus"></i> {{ $title }}
             </button> --}}
-            <button type="button" id="btn-create" class="btn btn-success" data-toggle="modal" data-target="#productCategoryModal">
+            <button type="button" id="btn-create" class="btn btn-success" data-toggle="modal"
+                data-target="#{{ $modal_target }}">
                 <i class="fa fa-plus"></i> {{ $title }}
             </button>
         </div>

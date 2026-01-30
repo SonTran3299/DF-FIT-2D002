@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    const STATUS_PENDING = 0;
-    const STATUS_CONFIRMED = 1;
-    const STATUS_SHIPPING = 2;
-    const STATUS_DELIVERED = 3;
-    const STATUS_CANCELLED = 4;
-    const STATUS_DELIVERY_FAILED = 5;
+    // const STATUS_PENDING = 0;
+    // const STATUS_CONFIRMED = 1;
+    // const STATUS_SHIPPING = 2;
+    // const STATUS_DELIVERED = 3;
+    // const STATUS_CANCELLED = 4;
+    // const STATUS_DELIVERY_FAILED = 5;
 
     use HasFactory;
 
@@ -36,22 +37,42 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Accessor
-    protected function statusToText(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $statusArray = [
-                    self::STATUS_PENDING => 'chờ xử lý',
-                    self::STATUS_CONFIRMED => 'xác nhận đơn hàng',
-                    self::STATUS_SHIPPING => 'đang giao',
-                    self::STATUS_DELIVERED => 'giao thành công',
-                    self::STATUS_CANCELLED => 'đã hủy',
-                    self::STATUS_DELIVERY_FAILED => 'giao hàng thất bại'
-                ];
+    protected $casts = [
+        'status' => OrderStatus::class
+    ];
 
-                return $statusArray[$this->status] ?? 'Lỗi không xác định';
-            },
-        );
-    }
+    // public static function getStatuses()
+    // {
+    //     return [
+    //         self::STATUS_PENDING => 'Chờ xử lý',
+    //         self::STATUS_CONFIRMED => 'Xác nhận đơn hàng',
+    //         self::STATUS_SHIPPING => 'Đang giao',
+    //         self::STATUS_DELIVERED => 'Giao thành công',
+    //         self::STATUS_CANCELLED => 'Đã hủy',
+    //         self::STATUS_DELIVERY_FAILED => 'Giao hàng thất bại'
+    //     ];
+    // }
+
+    // Accessor
+    // protected function statusToText(): Attribute
+    // {
+    // return Attribute::make(
+    //     get: function () {
+    //         $statusArray = [
+    //             self::STATUS_PENDING => 'chờ xử lý',
+    //             self::STATUS_CONFIRMED => 'xác nhận đơn hàng',
+    //             self::STATUS_SHIPPING => 'đang giao',
+    //             self::STATUS_DELIVERED => 'giao thành công',
+    //             self::STATUS_CANCELLED => 'đã hủy',
+    //             self::STATUS_DELIVERY_FAILED => 'giao hàng thất bại'
+    //         ];
+
+    //         return $statusArray[$this->status] ?? 'Lỗi không xác định';
+    //     },
+    // );
+
+    // return Attribute::make(
+    //     get: fn() => self::getStatuses()[$this->status] ?? 'Lỗi không xác định',
+    // );
+    // }
 }

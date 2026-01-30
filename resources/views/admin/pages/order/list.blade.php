@@ -49,7 +49,8 @@
                                 <td>{{ $data->address }}</td>
                                 <td>{{ $data->note ?? '-' }}</td>
                                 <td>{{ $data->total }}</td>
-                                <td>{{ $data->status_to_text }}</td>
+                                {{-- <td>{{ $data->status_to_text }}</td> --}}
+                                <td>{{ $data->status->label() }}</td>
                                 <td>{{ $data->updated_at ? \Carbon\Carbon::parse($data->updated_at)->format('d/m/Y H:i:s') : '-' }}
                                 </td>
                                 <td>

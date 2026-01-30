@@ -6,13 +6,16 @@
         <div class="d-flex align-items-baseline mb-3">
             <div class="form-group mr-3">
                 <input type="date" class="form-control" name="start_date" id="startDate"
-                    value="{{ request('start_date', \Carbon\Carbon::now()->format('Y-m-d')) }}">
+                    value="{{ request('start_date', \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d')) }}">
             </div>
             <div class="form-group mr-3">
                 <input type="date" class="form-control" name="end_date" id="endDate"
-                    value="{{ request('end_date', \Carbon\Carbon::now()->format('Y-m-d')) }}">
+                    value="{{ request('end_date', \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d')) }}">
             </div>
             <button type="submit" class="btn btn-primary">Lọc báo cáo</button>
+            <button type="submit" name="export" value="excel" class="btn btn-success d-flex ml-auto mr-1">
+            <i class="fas fa-file-excel mr-1"></i> Xuất báo cáo
+        </button>
         </div>
     </form>
     <div class="row g-2">
@@ -65,12 +68,10 @@
         function drawDailyNetSaleChart() {
             var rawData = @json($dailyNetSaleReport);
 
-            // Tạo DataTable
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Ngày');
             data.addColumn('number', 'Doanh thu');
 
-            // Thêm các hàng dữ liệu từ rawData
             if (rawData.length > 1) {
                 for (var i = 1; i < rawData.length; i++) {
                     data.addRow(rawData[i]);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandleFormattedTimestamps;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    const MAIN_IMAGE_PATH = 'images/product/main_image';
+    const PRODUCT_IMAGE_PATH = 'images/product/product_image';
+    const DEFAULT_IMAGE = 'default-product-image.jpg';
+
     use HasFactory, SoftDeletes;
+    use HandleFormattedTimestamps;
 
     protected $table = 'product';
 

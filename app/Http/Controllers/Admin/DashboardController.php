@@ -51,7 +51,6 @@ class DashboardController extends Controller
         return $chartData;
     }
 
-    // Calculate the percentage of successfully delivered orders in the month
     // protected static function calculateSuccessfulDeliveryRate(): float
     // {
     //     $total = Order::whereIn('status', [3, 5])->count();
@@ -72,7 +71,6 @@ class DashboardController extends Controller
         $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
         $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay();
 
-        // Orders successfully processed during this period
         $products = OrderItem::whereHas('order', function ($query) { 
             $query->where('status', '!=', 5); 
         })
@@ -100,10 +98,10 @@ class DashboardController extends Controller
         ];
     }
 
-    // Data from the last 3 months
     protected function getChartDataForLastThreeMonths(): array
     {
-        $chartData = [['Tháng', 'GROSS', 'NET', 'CHI PHÍ']];
+        //$chartData = [['Tháng', 'GROSS', 'NET', 'CHI PHÍ']];
+        $chartData = [['Tháng', 'GROSS', 'NET']];
         $today = Carbon::now();
 
         // Retrieve data for the last 3 months (including the current month)
@@ -117,16 +115,14 @@ class DashboardController extends Controller
 
             $label = ucfirst($date->monthName) . ' ' . $year;
 
-            // Add data to the chartData array
             $chartData[] = [
                 $label,
                 $monthlySummary['grossSale'],
                 $monthlySummary['netSale'],
-                $monthlySummary['expense']
+                //$monthlySummary['expense']
             ];
         }
 
-        // Reverse the array (except for the header) to display from oldest to newest month
         $header = array_shift($chartData);
         $chartData = array_reverse($chartData);
         array_unshift($chartData, $header);

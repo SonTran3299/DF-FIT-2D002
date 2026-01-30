@@ -26,7 +26,7 @@ class ProductStoreRequest extends FormRequest
             'price' => 'required',
             'product_category_id' => 'required',
             'status' => 'required',
-            'discount_percentage' => 'nullable|numeric|min:0|max:1',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
             'stock' => 'required|min:1',
             'main_image' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];
@@ -40,8 +40,8 @@ class ProductStoreRequest extends FormRequest
             'price.required' => 'Thêm giá tiền cho sản phẩm',
             'status.required' => 'Chọn trạng thái',
             'product_category_id.required' => 'Chọn danh mục sản phẩm',
-            'discount_percentage.min' => 'Nhập giá trị trong khoảng 0 - 1.0',
-            'discount_percentage.max' => 'Nhập giá trị trong khoảng 0 - 1.0',
+            'discount_percentage.min' => 'Nhập giá trị trong khoảng 0 - 100',
+            'discount_percentage.max' => 'Nhập giá trị trong khoảng 0 - 100',
             'stock.required' => 'Nhập tồn kho sản phẩm',
             'stock.min' => 'Nhập tồn kho lớn hơn 1',
         ];

@@ -11,6 +11,7 @@ use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -19,9 +20,9 @@ class ProductController extends Controller
         $searchQuery = $request->query('query') ?? null;
         $sort  = $request->sort ?? 'latest';
 
-        $arraySort = ['id', 'desc'];
+        $arraySort = ['updated_at', 'desc'];
         if ($sort === 'oldest') {
-            $arraySort = ['id', 'asc'];
+            $arraySort = ['updated_at', 'asc'];
         }
 
         [$column, $sort] = $arraySort;
@@ -34,16 +35,12 @@ class ProductController extends Controller
             $datas = Product::withTrashed()->where('name', 'LIKE', "%$searchQuery%")->orderBy($column,  $sort)->paginate($itemPerPage);
         }
 
-        return view('admin.pages.product.list', ['datas' => $datas]);
-    }
-
-    public function create()
-    {
-        return view('admin.pages.product.create');
+        return view('admin.pages.product.index', ['datas' => $datas]);
     }
 
     public function store(ProductStoreRequest $request)
     {
+        $fileName = Product::DEFAULT_IMAGE;
         if ($request->hasFile('main_image')) {
             $image = $request->file('main_image');
             $fileName = $image->getClientOriginalName();
@@ -52,17 +49,17 @@ class ProductController extends Controller
 
             $fileName = sprintf('%s_%s.%s', $fileName, uniqid(), $extension);
 
-            $image->move(public_path('images/product/main_image'), $fileName);
+            $image->move(public_path(Product::MAIN_IMAGE_PATH), $fileName);
         }
 
         $check = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'stock' => $request->stock,
+            'stock' => $request->stock ?? 0,
             'status' => $request->status,
             'product_category_id' => $request->product_category_id,
-            'discount_percentage' => $request->discount_percentage,
+            'discount_percentage' => $request->discount_percentage ?? 0,
             'main_image' => $fileName,
         ]) ? 'Tạo sản phẩm thành công' : 'Tạo sản phẩm thất bại'; //mass asignment
 
@@ -75,19 +72,19 @@ class ProductController extends Controller
         return redirect()->route('admin.product.list')->with('msg', $msg);
     }
 
-    public function detail(Product $product)
+    public function detail(Product $product) : Response
     {
-        return view('admin.pages.product.detail', ['data' => $product]);
+        return response()->json($product);
     }
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
-        $product = Product::findOrFail($product->id);
+        //$product = Product::findOrFail($product->id);
         $newMainImage = $product->main_image;
 
         if ($request->hasFile('main_image')) {
-            if ($product->main_image) {
-                $oldFilePath = public_path('images/product/main_image/' . $product->main_image);
+            if ($product->main_image && $product->main_image !== Product::DEFAULT_IMAGE) {
+                $oldFilePath = public_path(Product::MAIN_IMAGE_PATH . '/' . $product->main_image);
                 if (File::exists($oldFilePath)) {
                     File::delete($oldFilePath);
                 }
@@ -99,7 +96,7 @@ class ProductController extends Controller
 
             $newMainImage = sprintf('%s_%s.%s', $newFileName, uniqid(), $extension);
 
-            $image->move(public_path('images/product/main_image'), $newMainImage);
+            $image->move(public_path(Product::MAIN_IMAGE_PATH), $newMainImage);
         }
 
         $product->name = $request->name;

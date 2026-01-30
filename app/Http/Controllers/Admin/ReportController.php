@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\SaleReportExport;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -26,6 +28,10 @@ class ReportController extends Controller
 
         $summaryData = $this->getFinancialSummaryForDateRange($startDate, $endDate);
 
+        if ($request->has('export')) {
+            return $this->exportExcel($request);
+        }
+
         return view(
             'admin.pages.report.sale-summary',
             [
@@ -39,18 +45,16 @@ class ReportController extends Controller
     {
         $chartData = [['Ngày', 'Doanh thu']];
 
-        // Lặp qua từng ngày trong khoảng thời gian đã chọn
         $currentDate = $startDate->copy();
         while ($currentDate->lte($endDate)) {
             // Lấy netSale cho ngày hiện tại
             $netSaleForDay = $this->calculateNetSaleForSpecificDay($currentDate);
 
-            // Thêm dữ liệu vào mảng
             $chartData[] = [
-                $currentDate->format('d/m'), // Lấy số ngày
+                $currentDate->format('d/m'),
                 $netSaleForDay
             ];
-            $currentDate->addDay(); // Chuyển sang ngày tiếp theo
+            $currentDate->addDay();
         }
 
         return $chartData;
@@ -62,7 +66,7 @@ class ReportController extends Controller
         $endOfDay = $date->copy()->endOfDay();
 
         $products = OrderItem::whereHas('order', function ($query) {
-            $query->where('status', '!=', 5); // Bỏ các đơn giao không thành công
+            $query->where('status', '!=', 5);
         })
             ->whereBetween('created_at', [$startOfDay, $endOfDay])
             ->get();
@@ -94,7 +98,7 @@ class ReportController extends Controller
 
         $grossSale = 0;
         $discountAmount = 0;
-        $totalOperatingExpense = 0; // Tổng chi phí hoạt động trong khoảng thời gian
+        $totalOperatingExpense = 0;
 
         // Số ngày đã chọn để tính tổng chi phí
         $daysInPeriod = $startDate->diffInDays($endDate) + 1; // +1 vì diffInDays không tính ngày cuối
@@ -115,5 +119,21 @@ class ReportController extends Controller
             'expense' => $totalExpense,
             'totalOrders' => $totalOrders
         ];
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        // Lấy dữ liệu theo khoảng thời gian đã lọc
+        $orders = Order::with('user:id,name')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->select('id', 'user_id', 'created_at', 'total')
+            ->get();
+
+        $fileName = 'sale_summary_report' . Carbon::now()->format('d-m-Y') . '.xlsx';
+
+        return Excel::download(new SaleReportExport($orders), $fileName);
     }
 }
