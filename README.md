@@ -38,8 +38,6 @@ Home Page: ![Home Page](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Sc
 
 Admin Dashboard: ![Dashboard](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/admin_dashboard.jpg)
 
-Cart: ![Cart](link_anh_cua_ban)
-
 💻 Installation & Setup
 Clone the repository:
 
