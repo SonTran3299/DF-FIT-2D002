@@ -3,10 +3,10 @@
 # Online Store Website
 A full-stack web application designed for online management and purchasing. This project was developed as part of the Full Stack Web Development program at Green Academy.
 
-🚀 Overview
+ **Overview:**
 This system provides a seamless experience for both customers and administrators. It handles everything from product management to the checkout process using modern web technologies.
 
-🛠 Tech Stack
+ **Tech Stack:**
 
 - Backend: PHP (Laravel Framework) 
 
@@ -18,7 +18,7 @@ This system provides a seamless experience for both customers and administrators
 
 - Version Control: Git & GitHub 
 
-✨ Key Features
+ **Key Features:**
 
 - User Authentication: Secure Login and Registration system using Laravel.
 
@@ -32,13 +32,13 @@ This system provides a seamless experience for both customers and administrators
 
 - Responsive Design: Fully optimized for different screen sizes (Mobile, Tablet, Desktop) using Bootstrap.
 
-📸 Screenshots
+ **Screenshots:**
 
-Home Page: ![Home Page](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/home_page.jpg)
+- Home Page: ![Home Page](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/home_page.jpg)
 
-Admin Dashboard: ![Dashboard](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/admin_dashboard.jpg)
+- Admin Dashboard: ![Dashboard](https://github.com/SonTran3299/DF-FIT-2D002/blob/main/Screenshot/admin_dashboard.jpg)
 
-💻 Installation & Setup
+ **Installation & Setup:**
 Clone the repository:
 
 ```sh
@@ -69,7 +69,7 @@ Configure Environment:
 php artisan migrate
 ```
 
-* **Start the application:**
+ **Start the application:**
 
 Run the dev server (the output will give the address):
 
