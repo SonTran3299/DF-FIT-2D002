@@ -71,7 +71,7 @@ php artisan migrate
 
  **Start the application:**
 
-Run the dev server (the output will give the address):
+Run the dev server:
 
 ```sh
 php artisan serve
